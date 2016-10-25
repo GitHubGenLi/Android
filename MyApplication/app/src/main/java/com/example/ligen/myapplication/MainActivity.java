@@ -1,18 +1,22 @@
 package com.example.ligen.myapplication;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.TextureMapView;
 public class MainActivity extends AppCompatActivity {
-    MapView mMapView = null;
+    TextureMapView mMapView = null;
+    private BaiduMap bdMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +24,13 @@ public class MainActivity extends AppCompatActivity {
         //注意该方法要再setContentView方法之前实现
         SDKInitializer.initialize(getApplicationContext());
         //获取地图控件引用
-        mMapView = (MapView) findViewById(R.id.bmapView);
+        Context mContext = MainActivity.this;
+        LayoutInflater inflater =(LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View contentView = (View)inflater.inflate(R.layout.content_main,null);
+        mMapView = (TextureMapView) contentView.findViewById(R.id.bmapView);
+        bdMap = mMapView.getMap();
+        bdMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
